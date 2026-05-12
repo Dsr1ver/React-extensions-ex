@@ -5,12 +5,18 @@ import LogoDark from "../assets/images/logo-dark.svg";
 import IconMoon from "../assets/images/icon-moon.svg";
 
 export const Header = () => {
-  const [isDark, setIsDark] = useState(false);
+  const savedTheme = localStorage.getItem("dark");
+  if (JSON.parse(savedTheme)) {
+    document.documentElement.classList.add("dark");
+  }
+
+  const [isDark, setIsDark] = useState(JSON.parse(savedTheme));
 
   const handleClick = () => {
     const isDarkChanged = document.documentElement.classList.toggle("dark");
 
     setIsDark(isDarkChanged);
+    localStorage.setItem("dark", isDarkChanged);
   };
   return (
     <div className=" bg-Neutral-0 dark:bg-neutral-800 flex justify-between h-[66px] px-3 py-2 rounded-[10px] items-center mb-6">

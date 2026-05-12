@@ -2,7 +2,42 @@ import { Toggle } from "rsuite";
 import "rsuite/Toggle/styles/index.css";
 import { Button } from "./button";
 
-export const Card = ({ logo, name, description, isActive }) => {
+export const Card = ({
+  logo,
+  name,
+  description,
+  isActive,
+  extensions,
+  setExtensions,
+}) => {
+  const onToggle = () => {
+    const currentExtension = extensions.filter(
+      (extensions) => extensions.name === name,
+    )[0];
+
+    const updateExtension = {
+      ...currentExtension,
+      isActive: !currentExtension.isActive,
+    };
+
+    const newExtensions = extensions.map((extension) => {
+      if (extension.name === name) {
+        extension = { ...updateExtension };
+      }
+      return extension;
+    });
+
+    setExtensions(newExtensions);
+  };
+
+  const onRemove = () => {
+    const filteredExtension = extensions.filter(
+      (extension) => extension.name !== name,
+    );
+    console.log(filteredExtension);
+    setExtensions(filteredExtension);
+  };
+
   return (
     <div className=" bg-Neutral-0 rounded-lg p-4 shadow-sm dark:bg-Neutral-600 dark:text-Neutral-0">
       <div className="flex  gap-4 items-start mb-6 ">
@@ -17,9 +52,11 @@ export const Card = ({ logo, name, description, isActive }) => {
         </p>
       </div>
       <div className="flex items-center justify-between">
-        <Button textSmall>Remove</Button>
+        <Button handleClick={onRemove} textSmall>
+          Remove
+        </Button>
 
-        <Toggle checked={isActive} color="red" />
+        <Toggle onClick={onToggle} checked={isActive} color="red" />
       </div>
     </div>
   );
